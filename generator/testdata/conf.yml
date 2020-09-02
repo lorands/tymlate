@@ -1,0 +1,24 @@
+---
+data: #direct data
+  meta:
+    package: "github.com/lorands/tymlate"
+    name: MyEzample
+  Dat1: # the name of the map
+    key1: "value1"
+    key2: 22
+    key3: true
+  Dat2:
+    key11: "value eleven"
+    key2: 23
+    key3: false
+include:
+  cfgName1: subcfg1.yml
+  cfgNameTwo: subconf/subcfg2.yml
+templates:
+  includes:
+  - ".*\\.tpl"
+  - ".*\\.go"
+  - LICENSE
+  excludes:
+  - ".*\\.inv"
+  suffix: ".tpl"
