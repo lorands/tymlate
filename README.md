@@ -8,7 +8,7 @@ Usage:
   tymlate [flags]
 
 Flags:
-  -c, --configuration string   path to target folder
+  -c, --configuration string   path to configuration file
   -d, --datasource strings     Datasource in name=file format
   -h, --help                   help for tymlate
   -s, --source string          path to template source folder
