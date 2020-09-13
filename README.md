@@ -1,5 +1,13 @@
 # tymlate
-tymlate is a folder structure template engine based on go template
+
+Folder structure aware template engine, that mirrors the source folder structure to target, while processing go template files.
+
+You give me a structure source folder, that looks like a desired target, and I will:
+1. recreate the folder structure on target directory
+1. copy the files if it is not a template
+1. process template files to target
+
+It is based on go template with addition of Sprig template functions (http://masterminds.github.io/sprig/).
 
 ## Usage
 
