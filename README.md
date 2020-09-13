@@ -9,6 +9,16 @@ You give me a structure source folder, that looks like a desired target, and I w
 
 It is based on go template with addition of Sprig template functions (http://masterminds.github.io/sprig/).
 
+## Install 
+
+Under release (https://github.com/lorands/tymlate/releases) pick the latest archive of apropritate flavor 
+untar and copy `tymlate` to a folder that is on your `PATH` (on Linux e.g. `/usr/local/bin`). 
+
+Alternatively you can use go:
+```
+go get github.com/lorands/tymlate
+```
+
 ## Usage
 
 ```text
