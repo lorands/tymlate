@@ -10,6 +10,7 @@ type Templates struct {
 	Includes []string `yaml:"includes,omitempty"`
 	Excludes []string `yaml:"excludes,omitempty"`
 	Suffix string `default:".tmpl" yaml:"suffix,omitempty"`
+	ProcessFilename bool `yaml:"processFilename,omitempty"`
 }
 
 type Config struct {

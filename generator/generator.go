@@ -1,6 +1,7 @@
 package gen
 
 import (
+	"bytes"
 	"fmt"
 	"github.com/Masterminds/sprig"
 	"gopkg.in/yaml.v2"
@@ -46,20 +47,26 @@ func (tm *TemplateModel) Generate() error {
 			}
 			currentTarget := filepath.Join(tm.TargetPath, rel)
 			if ! info.IsDir() {
-				currentTargetDir := filepath.Dir(currentTarget)
+
+				tmplSuffix := tm.Config.Templates.Suffix
+				context, cErr := tm.prepareContext()
+				if cErr != nil {
+					return cErr
+				}
+				fErr, realTarget := tm.prepareTargetFilename(context, currentTarget)
+				if fErr != nil { //maybe we should fail back to real name instead?
+					return fErr
+				}
+
+				currentTargetDir := filepath.Dir(realTarget)
 				if _, err := os.Stat(currentTargetDir); os.IsNotExist(err) {
 					if err := os.MkdirAll(currentTargetDir, os.ModePerm); err != nil {
 						return err
 					}
 				}
 
-				tmplSuffix := tm.Config.Templates.Suffix
 				if strings.HasSuffix(info.Name(), tmplSuffix) { //apply template
-					realTarget := currentTarget[:len(currentTarget)-len(tmplSuffix)] //cut off .tmpl from the end
-					context, cErr := tm.prepareContext()
-					if cErr != nil {
-						return cErr
-					}
+
 					cErr = genConfig{
 						source:  relSource,
 						target:  realTarget,
@@ -69,7 +76,7 @@ func (tm *TemplateModel) Generate() error {
 						return cErr
 					}
 				} else { //simple copy
-					if _, err := fsCopy(relSource, currentTarget); err != nil {
+					if _, err := fsCopy(relSource, realTarget); err != nil {
 						return err
 					}
 				}
@@ -82,6 +89,29 @@ func (tm *TemplateModel) Generate() error {
 		return err
 	}
 	return nil
+}
+
+func (tm *TemplateModel) prepareTargetFilename(context map[string]map[string]interface{}, currentTarget string) (error, string) {
+	var realTarget string
+	if tm.Config.Templates.ProcessFilename { //try to process filename as template
+		tpl := template.Must(
+			template.New("currentTarget").Funcs(sprig.FuncMap()).Parse(currentTarget))
+
+		destination := bytes.NewBufferString("")
+
+		if err := tpl.Execute(destination, context); err != nil {
+			return err, ""
+		}
+		realTarget = destination.String()
+	} else {
+		realTarget = currentTarget
+	}
+	suf := tm.Config.Templates.Suffix
+	if strings.HasSuffix(realTarget, suf) {
+		realTarget = realTarget[:len(realTarget)-len(tm.Config.Templates.Suffix)] //cut off extension (.tmpl) from the end
+	}
+	return nil, realTarget
+
 }
 
 func (tm *TemplateModel) prepareContext() (map[string]map[string]interface{}, error) {

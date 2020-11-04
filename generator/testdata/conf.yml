@@ -18,7 +18,9 @@ templates:
   includes:
   - ".*\\.tpl"
   - ".*\\.go"
+  - ".*\\.txt"
   - LICENSE
   excludes:
   - ".*\\.inv"
   suffix: ".tpl"
+  processFilename: true

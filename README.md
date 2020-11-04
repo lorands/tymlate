@@ -36,10 +36,11 @@ Flags:
 
 In order to use `tymlate` you need:
 - folder containing source tree with files to be templated
+    - from `v1.1.0` even file or folder names can be templated
 - target folder where the files will be generated
-- configuration file inside of source folder with name 
+- configuration YAML inside of source folder with name 
 `.tymlate.yml` or provided with `-c` flag
-- optionally data yml files 
+- optionally data YAML files 
 
 ## Configuration file
 
@@ -68,6 +69,7 @@ templates:
   excludes:
   - ".*\\.inv"
   suffix: ".tpl"
+  processFilename: true
 ```
 Where:
 
@@ -79,7 +81,16 @@ the key will be the key from the yaml file (e.g. `cfgName1`)
     1. `includes` - files to include (regexp)
     1. `excludes` - files to ignore (regexp)
     1. `suffix` (required): the template file suffix
+    1. `processFilename` (optional): true if filenames and 
+    folder names should be processed as go templates (by default false)
 
+## Examples included
+
+See: [generator/testdata](generator/testdata) 
+
+Under the [`source`](generator/testdata/source) you will find a source we use to test, 
+and under [`target`](generator/testdata/target) you can see the desired output. 
+The configuration is provided in [`conf.yml`](generator/testdata/conf.yml)
 
 ## Step by step usage
 
