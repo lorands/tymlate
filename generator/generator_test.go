@@ -1,9 +1,8 @@
-package gen
+package generator
 
 import (
 	"bytes"
 	"fmt"
-	"github.com/pmezard/go-difflib/difflib"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -11,6 +10,8 @@ import (
 	"sort"
 	"strings"
 	"testing"
+
+	"github.com/pmezard/go-difflib/difflib"
 )
 
 func TestTemplateModel_Generate(t *testing.T) {
@@ -20,10 +21,10 @@ func TestTemplateModel_Generate(t *testing.T) {
 	testData, _ := filepath.Abs(filepath.Join(filepath.Dir(filename), "testdata"))
 	absSource := filepath.Join(testData, "source")
 	//absTarget := filepath.Join(testData, "target")
-	absTarget, _ :=  ioutil.TempDir("", "tymlate-test")
+	absTarget, _ := ioutil.TempDir("", "tymlate-test")
 
 	absConfig := filepath.Join(testData, "conf.yml")
-	err, tm := NewTemplateModel(absSource, absTarget, absConfig, false)
+	tm, err := New(absSource, absTarget, absConfig, false)
 	if err != nil {
 		panic(err)
 	}
@@ -34,7 +35,7 @@ func TestTemplateModel_Generate(t *testing.T) {
 	//diff folder with target
 	absExpected := filepath.Join(testData, "target")
 	same, number, _ := dirDiff(absTarget, absExpected)
-	if  ! same || number != 1 {
+	if !same || number != 1 {
 		t.Errorf("The target output does not match the expected one ")
 	}
 
@@ -64,20 +65,19 @@ func dirDiff(left, right string) (bool, int, error) {
 		leftStr, _ := ioutil.ReadFile(leftFile)
 		rightStr, _ := ioutil.ReadFile(rightFiles[i])
 
-		if bytes.Compare(leftStr, rightStr) != 0 {
+		if !bytes.Equal(leftStr, rightStr) {
 			fmt.Printf("!! Differs... %s  <---> %s\n", leftFile, rightFiles[i])
 			//fmt.Println(leftStr, rightStr))
 			ddiff := difflib.ContextDiff{
-				A: difflib.SplitLines(string(leftStr)),
-				B: difflib.SplitLines(string(rightStr)),
+				A:        difflib.SplitLines(string(leftStr)),
+				B:        difflib.SplitLines(string(rightStr)),
 				FromFile: "Left",
-				ToFile: "Right",
-				Context: 3,
-				Eol: "\n",
+				ToFile:   "Right",
+				Context:  3,
+				Eol:      "\n",
 			}
 			res, _ := difflib.GetContextDiffString(ddiff)
-			fmt.Printf(strings.Replace(res, "\t", " ", -1))
-			//return false, nil
+			fmt.Println(strings.Replace(res, "\t", " ", -1))
 			numberOfDiffs++
 		}
 	}

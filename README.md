@@ -4,15 +4,15 @@ Folder structure aware template engine, that mirrors the source folder structure
 
 You give me a structure source folder, that looks like a desired target, and I will:
 1. recreate the folder structure on target directory
-1. copy the files if it is not a template
-1. process template files to target
+2. copy the files if it is not a template
+3. process template files to target
 
 It is based on go template with addition of Sprig template functions (http://masterminds.github.io/sprig/).
 
-## Install 
+## Install
 
-Under release (https://github.com/lorands/tymlate/releases) pick the latest archive of apropritate flavor 
-untar and copy `tymlate` to a folder that is on your `PATH` (on Linux e.g. `/usr/local/bin`). 
+Under release (https://github.com/lorands/tymlate/releases) pick the latest archive of apropritate flavor
+untar and copy `tymlate` to a folder that is on your `PATH` (on Linux e.g. `/usr/local/bin`).
 
 Alternatively you can use go:
 ```
@@ -38,9 +38,9 @@ In order to use `tymlate` you need:
 - folder containing source tree with files to be templated
     - from `v1.1.0` even file or folder names can be templated
 - target folder where the files will be generated
-- configuration YAML inside of source folder with name 
+- configuration YAML inside of source folder with name
 `.tymlate.yml` or provided with `-c` flag
-- optionally data YAML files 
+- optionally data YAML files
 
 ## Configuration file
 
@@ -58,6 +58,14 @@ data: #direct data
     key11: "value eleven"
     key2: 23
     key3: false
+  list:
+    fields:
+      - name: "Code"
+        type: "string"
+        json: "code"
+      - name: "Description"
+        type: "string"
+        json: "description"
 include:
   cfgName1: subcfg1.yml
   cfgNameTwo: subconf/subcfg2.yml
@@ -75,33 +83,43 @@ Where:
 
 1. `data` (optional): contains the variables to be used in context,
 from the example you would access {{.meta.name}} from your template
-1. `include` (optional): include additional yaml data files,
+2. `include` (optional): include additional yaml data files,
 the key will be the key from the yaml file (e.g. `cfgName1`)
-1. `templates` (required)
+3. `templates` (required)
     1. `includes` - files to include (regexp)
-    1. `excludes` - files to ignore (regexp)
-    1. `suffix` (required): the template file suffix
-    1. `processFilename` (optional): true if filenames and 
+    2. `excludes` - files to ignore (regexp)
+    3. `suffix` (required): the template file suffix
+    4. `processFilename` (optional): true if filenames and
     folder names should be processed as go templates (by default false)
+
+## Example usage list data
+
+```gotemplate
+type {{.meta.name}}Input struct {
+	{{ range $i, $field := .list.fields -}}
+        	{{ $field.name }} {{ $field.type }} `json:"{{ $field.json }}"`
+        {{ end -}}
+}
+```
 
 ## Examples included
 
-See: [generator/testdata](generator/testdata) 
+See: [generator/testdata](generator/testdata)
 
-Under the [`source`](generator/testdata/source) you will find a source we use to test, 
-and under [`target`](generator/testdata/target) you can see the desired output. 
+Under the [`source`](generator/testdata/source) you will find a source we use to test,
+and under [`target`](generator/testdata/target) you can see the desired output.
 The configuration is provided in [`conf.yml`](generator/testdata/conf.yml)
 
 ## Step by step usage
 
-1. Create a template folder structure. 
-1. Create a configuration that defines how to process
+1. Create a template folder structure.
+2. Create a configuration that defines how to process
  the structure.
-1. Define folder structure
-1. Define context data file(s)
-1. Run tymlate with configuration
+3. Define folder structure
+4. Define context data file(s)
+5. Run tymlate with configuration
 
-Let's assume you would like to generate this structure 
+Let's assume you would like to generate this structure
 each time you have a new project:
 
 ```
@@ -121,7 +139,7 @@ each time you have a new project:
 
 Just create a structure that will be mirrored to target.
 
-Decide on what will be the template file extension, 
+Decide on what will be the template file extension,
 we use `.tpl` in this example (see: `tymlate/generator/testdata/source`).
 
 ```
@@ -145,7 +163,7 @@ Each template file is "just" a go template.
 ## Template functions included
 
 We included Sprig (http://masterminds.github.io/sprig/)
-functions for your convenience. 
+functions for your convenience.
 
 ## Command line (cli) examples
 
@@ -156,7 +174,7 @@ tymlate -s path/to/source -t path/to/target
 In this case the configuration should be provided
 in `.tymlate.yml` file inside the source.
 
-Simple case, with an external config: 
+Simple case, with an external config:
 ```shell script
 tymlate -c path/to/config.yml -s path/to/source -t path/to/target
 ```
