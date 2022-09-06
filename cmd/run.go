@@ -71,14 +71,10 @@ var (
 
 func init() {
 	rootCmd.PersistentFlags().StringVarP(&source, "source", "s", "", "path to template source folder")
-	if err := rootCmd.MarkFlagRequired("source"); err != nil {
-		log.Fatal(err)
-	}
+	_ = rootCmd.MarkFlagRequired("source")
 
 	rootCmd.PersistentFlags().StringVarP(&target, "target", "t", "", "path to target folder")
-	if err := rootCmd.MarkFlagRequired("target"); err != nil {
-		log.Fatal(err)
-	}
+	_ = rootCmd.MarkFlagRequired("target")
 
 	rootCmd.PersistentFlags().StringVarP(&confFile, "configuration", "c", "", "path to configuration file")
 	rootCmd.PersistentFlags().StringSliceP("datasource", "d", nil, "Datasource in name=file format")
