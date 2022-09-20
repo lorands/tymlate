@@ -12,7 +12,7 @@ import (
 	"github.com/Masterminds/sprig"
 	"gopkg.in/yaml.v3"
 
-	"github.com/lorands/tymlate/config"
+	"github.com/CarosDrean/tymlate/config"
 )
 
 type Generator struct {

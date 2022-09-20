@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/lorands/tymlate/cmd"
+	"github.com/CarosDrean/tymlate/cmd"
 )
 
 func main() {
