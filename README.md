@@ -11,12 +11,12 @@ It is based on go template with addition of Sprig template functions (http://mas
 
 ## Install
 
-Under release (https://github.com/lorands/tymlate/releases) pick the latest archive of apropritate flavor
+Under release (https://github.com/CarosDrean/tymlate/releases) pick the latest archive of apropritate flavor
 untar and copy `tymlate` to a folder that is on your `PATH` (on Linux e.g. `/usr/local/bin`).
 
 Alternatively you can use go:
 ```
-go get github.com/lorands/tymlate
+go get github.com/CarosDrean/tymlate
 ```
 
 ## Usage
@@ -48,7 +48,7 @@ Here is an example configuration file:
 ```yaml
 data: #direct data
   meta:
-    package: "github.com/lorands/tymlate"
+    package: "github.com/CarosDrean/tymlate"
     name: MyEzample
   Dat1: # the name of the map
     key1: "value1"

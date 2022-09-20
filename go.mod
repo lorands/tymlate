@@ -1,4 +1,4 @@
-module github.com/lorands/tymlate
+module github.com/CarosDrean/tymlate
 
 go 1.18
 

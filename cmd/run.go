@@ -9,7 +9,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/lorands/tymlate/generator"
+	"github.com/CarosDrean/tymlate/generator"
 )
 
 var (
