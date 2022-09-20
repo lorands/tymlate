@@ -18,7 +18,7 @@ func TestTemplateModel_Generate(t *testing.T) {
 	_, filename, _, _ := runtime.Caller(0)
 	t.Logf("Current test filename: %s", filename)
 
-	testData, _ := filepath.Abs(filepath.Join(filepath.Dir(filename), "testdata"))
+	testData, _ := filepath.Abs(filepath.Join(filepath.Dir(filename), "_testdata"))
 	absSource := filepath.Join(testData, "source")
 	//absTarget := filepath.Join(testData, "target")
 	absTarget, _ := ioutil.TempDir("", "tymlate-test")

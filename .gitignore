@@ -33,4 +33,4 @@ go.work
 tags
 
 .env
-/generator/testdata/target/
+/generator/_testdata/target/

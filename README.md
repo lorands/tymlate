@@ -104,11 +104,11 @@ type {{.meta.name}}Input struct {
 
 ## Examples included
 
-See: [generator/testdata](generator/testdata)
+See: [generator/testdata](generator/_testdata)
 
-Under the [`source`](generator/testdata/source) you will find a source we use to test,
-and under [`target`](generator/testdata/target) you can see the desired output.
-The configuration is provided in [`conf.yml`](generator/testdata/conf.yml)
+Under the [`source`](generator/_testdata/source) you will find a source we use to test,
+and under [`target`](generator/_testdata/target) you can see the desired output.
+The configuration is provided in [`conf.yml`](generator/_testdata/conf.yml)
 
 ## Step by step usage
 
